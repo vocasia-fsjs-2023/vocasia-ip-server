@@ -1,3 +1,4 @@
+import sequlizeErrors from "../errors/sequlizeErrors";
 import { User } from "../models";
 
 export const createUser = async (req, res) => {
@@ -9,6 +10,10 @@ export const createUser = async (req, res) => {
       username,
     });
 
-    res.status(201).json(user);
-  } catch (error) {}
+    return res
+      .status(201)
+      .json({ id: user.id, username: user.username, email: user.email });
+  } catch (error) {
+    sequlizeErrors(error, req, res);
+  }
 };
