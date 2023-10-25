@@ -76,8 +76,7 @@ export const updateMember = async (req, res) => {
 };
 
 export const removeMember = async (req, res) => {
-  const { kanbanId, userId } = req.body;
-  const { memberId } = req.query;
+  const { memberId, kanbanId } = req.query;
   try {
     const isUserAuthorized = await Member.findOne({
       where: {
