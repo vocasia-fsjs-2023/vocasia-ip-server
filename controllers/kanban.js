@@ -1,13 +1,19 @@
 import sequlizeErrors from "../errors/sequlizeErrors";
-import { Kanban, Member } from "../models";
+import { Kanban, Member, KanbanColumn, KanbanNote } from "../models";
 
-export const createKanban = (req, res) => {
+export const createKanban = async (req, res) => {
   const { name } = req.body;
   const creatorId = req.user.id;
   try {
-    const kanban = Kanban.create({
+    const kanban = await Kanban.create({
       name,
       creatorId,
+    });
+
+    await Member.create({
+      userId: creatorId,
+      kanbanId: kanban.id,
+      role: "admin",
     });
 
     return res.status(201).json({
@@ -19,12 +25,12 @@ export const createKanban = (req, res) => {
   }
 };
 
-export const updateKanban = (req, res) => {
+export const updateKanban = async (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
   const creatorId = req.user.id;
   try {
-    const kanban = Kanban.update(
+    const kanban = await Kanban.findOne(
       { name },
       {
         where: {
@@ -33,6 +39,15 @@ export const updateKanban = (req, res) => {
         },
       }
     );
+
+    if (!kanban) {
+      return res.status(404).json({
+        message: "Kanban not found",
+      });
+    }
+
+    kanban.name = name;
+    await kanban.save();
 
     return res.status(200).json({
       message: "Kanban updated successfully",
@@ -43,12 +58,12 @@ export const updateKanban = (req, res) => {
   }
 };
 
-export const deleteKanban = (req, res) => {
+export const deleteKanban = async (req, res) => {
   const { id } = req.params;
   const creatorId = req.user.id;
 
   try {
-    const kanban = Kanban.destroy({
+    const kanban = await Kanban.destroy({
       where: {
         id,
         creatorId,
@@ -57,27 +72,31 @@ export const deleteKanban = (req, res) => {
 
     return res.status(200).json({
       message: "Kanban deleted successfully",
-      data: kanban,
     });
   } catch (error) {
     sequlizeErrors(error, req, res);
   }
 };
 
-export const getKanban = (req, res) => {
+export const getKanban = async (req, res) => {
   const { id } = req.params;
   const creatorId = req.user.id;
 
   try {
-    const kanban = Kanban.findOne(
-      {
-        where: {
-          id,
-          creatorId,
+    const kanban = await Kanban.findOne({
+      where: {
+        id,
+        creatorId,
+      },
+      include: {
+        model: KanbanColumn,
+        as: "kanbanColumn",
+        include: {
+          model: KanbanNote,
+          as: "kanbanNote",
         },
       },
-      { include: { all: true } }
-    );
+    });
 
     return res.status(200).json({
       message: "Kanban retrieved successfully",
@@ -88,18 +107,15 @@ export const getKanban = (req, res) => {
   }
 };
 
-export const getKanbans = (req, res) => {
+export const getKanbans = async (req, res) => {
   const creatorId = req.user.id;
 
   try {
-    const kanbans = Kanban.findAll(
-      {
-        where: {
-          creatorId,
-        },
+    const kanbans = await Kanban.findAll({
+      where: {
+        creatorId,
       },
-      { include: { all: true } }
-    );
+    });
 
     return res.status(200).json({
       message: "Kanbans retrieved successfully",

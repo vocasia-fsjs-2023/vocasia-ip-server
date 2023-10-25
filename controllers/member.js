@@ -1,4 +1,6 @@
 import { Member } from "../models";
+import sequlizeErrors from "../errors/sequlizeErrors";
+
 export const addMember = async (req, res) => {
   const { kanbanId, userId, role } = req.body;
   const creatorId = req.user.id;
@@ -14,6 +16,19 @@ export const addMember = async (req, res) => {
     if (!isUserAuthorized) {
       return res.status(401).json({
         message: "You are not authorized to perform this action",
+      });
+    }
+
+    const isExistingMember = await Member.findOne({
+      where: {
+        kanbanId,
+        userId,
+      },
+    });
+
+    if (isExistingMember) {
+      return res.status(409).json({
+        message: "Member already exists",
       });
     }
 
@@ -34,7 +49,6 @@ export const addMember = async (req, res) => {
 
 export const updateMember = async (req, res) => {
   const { kanbanId, userId, role } = req.body;
-  const { memberId } = req.query;
 
   try {
     const isUserAuthorized = await Member.findOne({
@@ -55,7 +69,7 @@ export const updateMember = async (req, res) => {
       { role },
       {
         where: {
-          id: memberId,
+          userId,
           kanbanId,
         },
       }
@@ -76,7 +90,7 @@ export const updateMember = async (req, res) => {
 };
 
 export const removeMember = async (req, res) => {
-  const { memberId, kanbanId } = req.query;
+  const { userId, kanbanId } = req.body;
   try {
     const isUserAuthorized = await Member.findOne({
       where: {
@@ -94,7 +108,7 @@ export const removeMember = async (req, res) => {
 
     const member = await Member.destroy({
       where: {
-        id: memberId,
+        userId,
         kanbanId,
       },
     });

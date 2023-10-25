@@ -15,7 +15,7 @@ export default (error, req, res, next) => {
 
   if (error instanceof Sequelize.UniqueConstraintError) {
     return res.status(400).json({
-      message: error.errors[0].message,
+      message: "Username or email already exists",
     });
   }
 
