@@ -1,5 +1,5 @@
 import sequlizeErrors from "../errors/sequlizeErrors";
-import { Kanban } from "../models";
+import { Kanban, Member } from "../models";
 
 export const createKanban = (req, res) => {
   const { name } = req.body;
