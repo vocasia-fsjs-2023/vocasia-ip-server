@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Kanban extends Model {
     /**
@@ -13,11 +11,33 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Kanban.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Kanban',
-  });
+  Kanban.init(
+    {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      creatorId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: "Users",
+          },
+          key: "id",
+        },
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Kanban",
+    }
+  );
   return Kanban;
 };

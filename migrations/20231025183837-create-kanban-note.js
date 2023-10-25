@@ -35,7 +35,7 @@ module.exports = {
         },
         allowNull: false,
       },
-      color: {
+      colorId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
