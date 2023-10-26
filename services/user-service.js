@@ -14,14 +14,13 @@ const {
 const register = async (request) => {
     const user = validate(registerUserValidation, request);
 
-    const countUser = await User.count({
-        where: {
-            [Op.or]: [{ username: user.username }, { email: user.email }],
-        },
-    });
-
-    if (countUser === 1) {
-        throw new ResponseError(400, "User already exists");
+    const emailExist = await User.count({ where: { email: user.email } });
+    const usernameExist = await User.count({ where: { username: user.username } });
+    
+    if (emailExist === 1) {
+        throw new ResponseError(400, "Email already exists");
+    } else if (usernameExist === 1) {
+        throw new ResponseError(400, "Username already exists");
     }
 
     return User.create(user);
