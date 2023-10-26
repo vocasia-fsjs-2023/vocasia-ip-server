@@ -123,6 +123,12 @@ export const getKanban = async (req, res) => {
       },
     });
 
+    if (!kanban) {
+      return res.status(404).json({
+        message: "Kanban not found",
+      });
+    }
+
     return res.status(200).json({
       message: "Kanban retrieved successfully",
       data: kanban,

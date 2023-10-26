@@ -25,7 +25,17 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING,
       },
-      idKanbanColumn: {
+      kanbanId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: "Kanbans",
+          },
+          key: "id",
+        },
+        allowNull: false,
+      },
+      columnId: {
         type: DataTypes.INTEGER,
         references: {
           model: {

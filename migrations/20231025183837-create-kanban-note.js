@@ -15,7 +15,17 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
-      idKanbanColumn: {
+      kanbanId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Kanbans",
+          },
+          key: "id",
+        },
+        allowNull: false,
+      },
+      columnId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
@@ -25,6 +35,7 @@ module.exports = {
         },
         allowNull: false,
       },
+
       creatorId: {
         type: Sequelize.INTEGER,
         references: {
