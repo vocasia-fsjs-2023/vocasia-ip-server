@@ -10,8 +10,8 @@ module.exports = {
             id: {
                 allowNull: false,
                 primaryKey: true,
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4,
+                autoIncrement: true,
+                type: DataTypes.INTEGER,
             },
             name: {
                 type: DataTypes.STRING(100),

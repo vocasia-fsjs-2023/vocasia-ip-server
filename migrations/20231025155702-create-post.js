@@ -9,11 +9,11 @@ module.exports = {
             id: {
                 allowNull: false,
                 primaryKey: true,
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4,
+                autoIncrement: true,
+                type: DataTypes.INTEGER,
             },
             userId: {
-                type: DataTypes.UUID,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
                     model: "Users",

@@ -9,11 +9,11 @@ module.exports = {
             id: {
                 allowNull: false,
                 primaryKey: true,
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV4,
+                autoIncrement: true,
+                type: DataTypes.INTEGER,
             },
             postId: {
-                type: DataTypes.UUID,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
                     model: "Posts",
@@ -21,7 +21,7 @@ module.exports = {
                 },
             },
             userId: {
-                type: DataTypes.UUID,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
                     model: "Users",
@@ -29,7 +29,7 @@ module.exports = {
                 },
             },
             content: {
-                type: DataTypes.TEXT,
+                type: DataTypes.STRING(255),
                 allowNull: false,
             },
             createdAt: {

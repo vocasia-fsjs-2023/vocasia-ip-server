@@ -4,6 +4,10 @@ const morgan = require("morgan");
 const cors = require("cors");
 const { errorMiddleware } = require("./middleware/error-middleware");
 
+// const userRoutes = require("./routes/user-route");
+// const postRoutes = require("./routes/post-route");
+const api = require("./routes/api");
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -15,6 +19,10 @@ app.use(morgan("combined"));
 app.get("/", (req, res) => {
     res.status(200).send("Blog app api");
 });
+
+// app.use(userRoutes);
+// app.use(userRoutes);
+app.use(api);
 
 app.use(errorMiddleware);
 
