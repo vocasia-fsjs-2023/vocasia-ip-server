@@ -4,31 +4,29 @@ import {
   Member,
   KanbanNote as Note,
 } from "../models";
+import sequlizeErrors from "../errors/sequlizeErrors";
 
 export const createColumn = async (req, res) => {
-  const { title, kanbanId } = req.body;
+  const { name, kanbanId } = req.body;
   const creatorId = req.user.id;
 
   try {
-    /* The code `const kanban = await Member.findOne({ where: { kanbanId, userId: creatorId } })` is
-  querying the `Member` model to find a specific member who is associated with a particular
-  `kanbanId` and `userId`. It is used to check if the member exists in the database before creating
-  a new column. */
-    const kanban = await Member.findOne({
+    const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,
         userId: creatorId,
+        role: "admin",
       },
     });
 
-    if (!kanban) {
-      return res.status(404).json({
-        message: "Kanban not found",
+    if (!isUserAuthorized) {
+      return res.status(401).json({
+        message: "You are not authorized to perform this action",
       });
     }
 
     const column = await Column.create({
-      title,
+      name,
       kanbanId,
     });
 
@@ -42,7 +40,7 @@ export const createColumn = async (req, res) => {
 };
 
 export const updateColumn = async (req, res) => {
-  const { title, kanbanId } = req.body;
+  const { name, kanbanId } = req.body;
   const { id } = req.params;
 
   try {
@@ -61,7 +59,7 @@ export const updateColumn = async (req, res) => {
     }
 
     const column = await Column.update(
-      { title },
+      { name },
       {
         where: {
           id,
@@ -120,7 +118,7 @@ export const deleteColumn = async (req, res) => {
 
     await Note.destroy({
       where: {
-        columnId: id,
+        idKanbanColumn: id,
       },
     });
 

@@ -1,9 +1,9 @@
 import e from "express";
 import { KanbanNote as Note, Member } from "../models";
+import sequlizeErrors from "../errors/sequlizeErrors";
 export const createNote = async (req, res) => {
-  const { title, description, columnId } = req.body;
-  const { kanbanId } = req.query;
-
+  const { title, description, columnId, colorId, kanbanId } = req.body;
+  const creatorId = req.user.id;
   try {
     const isUserAuthorized = await Member.findOne({
       where: {
@@ -21,7 +21,10 @@ export const createNote = async (req, res) => {
     const note = await Note.create({
       title,
       description,
-      columnId,
+      idKanbanColumn: columnId,
+      colorId,
+      creatorId,
+      kanbanId,
     });
 
     return res.status(201).json({
@@ -34,8 +37,7 @@ export const createNote = async (req, res) => {
 };
 
 export const updateNote = async (req, res) => {
-  const { title, description, columnId } = req.body;
-  const { kanbanId } = req.query;
+  const { title, description, columnId, kanbanId } = req.body;
   const { id } = req.params;
 
   try {
@@ -77,7 +79,7 @@ export const updateNote = async (req, res) => {
 };
 
 export const deleteNote = async (req, res) => {
-  const { kanbanId } = req.query;
+  const { kanbanId } = req.body;
   const { id } = req.params;
 
   try {

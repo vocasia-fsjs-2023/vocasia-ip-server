@@ -1,6 +1,5 @@
 import sequlizeErrors from "../errors/sequlizeErrors";
 import { Kanban, Member, KanbanColumn, KanbanNote } from "../models";
-
 export const createKanban = async (req, res) => {
   const { name } = req.body;
   const creatorId = req.user.id;
@@ -63,12 +62,38 @@ export const deleteKanban = async (req, res) => {
   const creatorId = req.user.id;
 
   try {
-    const kanban = await Kanban.destroy({
+    const isUserAuthorized = await Kanban.findOne({
       where: {
         id,
         creatorId,
       },
     });
+
+    if (!isUserAuthorized) {
+      return res.status(403).json({
+        message: "You are not authorized to delete this kanban",
+      });
+    }
+
+    await Member.destroy({
+      where: {
+        kanbanId: id,
+      },
+    });
+
+    await KanbanNote.destroy({
+      where: {
+        kanbanId: id,
+      },
+    });
+
+    await KanbanColumn.destroy({
+      where: {
+        kanbanId: id,
+      },
+    });
+
+    isUserAuthorized.destroy();
 
     return res.status(200).json({
       message: "Kanban deleted successfully",

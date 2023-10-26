@@ -16,6 +16,8 @@ export const login = async (req, res) => {
       },
     });
 
+    console.log(user);
+
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -50,9 +52,11 @@ export const register = async (req, res) => {
 
     return res.status(201).json({
       message: "User created",
-      id: user.id,
-      username: user.username,
-      email: user.email,
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
     });
   } catch (error) {
     sequlizeErrors(error, req, res);

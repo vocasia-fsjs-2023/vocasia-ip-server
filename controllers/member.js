@@ -1,4 +1,4 @@
-import { Member } from "../models";
+import { Kanban, Member } from "../models";
 import sequlizeErrors from "../errors/sequlizeErrors";
 
 export const addMember = async (req, res) => {
@@ -103,6 +103,19 @@ export const removeMember = async (req, res) => {
     if (!isUserAuthorized) {
       return res.status(401).json({
         message: "You are not authorized to perform this action",
+      });
+    }
+
+    const kanbanCreator = await Kanban.findOne({
+      where: {
+        id: kanbanId,
+        creatorId: userId,
+      },
+    });
+
+    if (kanbanCreator) {
+      return res.status(401).json({
+        message: "You cannot remove the creator of the kanban",
       });
     }
 
