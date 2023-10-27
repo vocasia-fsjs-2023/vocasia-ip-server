@@ -21,7 +21,7 @@ export const createNote = async (req, res) => {
     const note = await Note.create({
       title,
       description,
-      idKanbanColumn: columnId,
+      columnId,
       colorId,
       creatorId,
       kanbanId,

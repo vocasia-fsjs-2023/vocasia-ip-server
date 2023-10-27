@@ -1,4 +1,4 @@
-import { Kanban, Member } from "../models";
+import { Kanban, Member, User } from "../models";
 import sequlizeErrors from "../errors/sequlizeErrors";
 
 export const addMember = async (req, res) => {
@@ -16,6 +16,18 @@ export const addMember = async (req, res) => {
     if (!isUserAuthorized) {
       return res.status(401).json({
         message: "You are not authorized to perform this action",
+      });
+    }
+
+    const isUserExist = await User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!isUserExist) {
+      return res.status(404).json({
+        message: "User not found",
       });
     }
 

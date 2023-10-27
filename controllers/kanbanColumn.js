@@ -103,6 +103,12 @@ export const deleteColumn = async (req, res) => {
       });
     }
 
+    await Note.destroy({
+      where: {
+        columnId: id,
+      },
+    });
+
     const column = await Column.destroy({
       where: {
         id,
@@ -115,12 +121,6 @@ export const deleteColumn = async (req, res) => {
         message: "Column not found",
       });
     }
-
-    await Note.destroy({
-      where: {
-        idKanbanColumn: id,
-      },
-    });
 
     return res.status(200).json({
       message: "Column deleted successfully",

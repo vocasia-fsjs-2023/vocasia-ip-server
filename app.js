@@ -20,7 +20,7 @@ app.use("/user", auth, usersRouter);
 app.use("/kanban", auth, kanbanRouter);
 app.use("/column", auth, kanbanColumnRouter);
 app.use("/note", auth, kanbanNoteRouter);
-app.use("/kanban/:idKanban/member", auth, memberRouter);
+app.use("/member", auth, memberRouter);
 
 app.listen(port, () => {
   console.log("Server listening on port " + port);

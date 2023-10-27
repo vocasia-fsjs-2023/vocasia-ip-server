@@ -108,19 +108,37 @@ export const getKanban = async (req, res) => {
   const creatorId = req.user.id;
 
   try {
+    const isUserAuthorized = await Member.findOne({
+      where: {
+        kanbanId: id,
+        userId: creatorId,
+      },
+    });
+
+    if (!isUserAuthorized) {
+      return res.status(401).json({
+        message: "You are not authorized to perform this action",
+      });
+    }
+
     const kanban = await Kanban.findOne({
       where: {
         id,
-        creatorId,
       },
-      include: {
-        model: KanbanColumn,
-        as: "kanbanColumn",
-        include: {
-          model: KanbanNote,
-          as: "kanbanNote",
+      include: [
+        {
+          model: KanbanColumn,
+          as: "kanbanColumn",
+          include: {
+            model: KanbanNote,
+            as: "kanbanNote",
+          },
         },
-      },
+        {
+          model: Member,
+          as: "member",
+        },
+      ],
     });
 
     if (!kanban) {
