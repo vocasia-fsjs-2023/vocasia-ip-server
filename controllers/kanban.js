@@ -1,9 +1,14 @@
 import sequlizeErrors from "../errors/sequlizeErrors";
 import { Kanban, Member, KanbanColumn, KanbanNote } from "../models";
+import * as yup from "yup";
 export const createKanban = async (req, res) => {
   const { name } = req.body;
   const creatorId = req.user.id;
+  const schema = yup.object().shape({
+    name: yup.string().required().min(3).max(32),
+  });
   try {
+    await schema.validate(req.body);
     const kanban = await Kanban.create({
       name,
       creatorId,
@@ -28,7 +33,11 @@ export const updateKanban = async (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
   const creatorId = req.user.id;
+
   try {
+    await yup.string().required().min(3).max(32).validate(name);
+    await yup.number().required().validate(id);
+
     const kanban = await Kanban.findOne(
       { name },
       {
@@ -62,6 +71,7 @@ export const deleteKanban = async (req, res) => {
   const creatorId = req.user.id;
 
   try {
+    await yup.number().required().validate(id);
     const isUserAuthorized = await Kanban.findOne({
       where: {
         id,
@@ -108,6 +118,7 @@ export const getKanban = async (req, res) => {
   const creatorId = req.user.id;
 
   try {
+    await yup.number().required().validate(id);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId: id,

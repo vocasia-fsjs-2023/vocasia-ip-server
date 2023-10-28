@@ -4,7 +4,13 @@ import sequlizeErrors from "../errors/sequlizeErrors";
 export const addMember = async (req, res) => {
   const { kanbanId, userId, role } = req.body;
   const creatorId = req.user.id;
+  const schema = yup.object().shape({
+    kanbanId: yup.number().required(),
+    userId: yup.number().required(),
+    role: yup.mixed().oneOf(["admin", "member"]).required(),
+  });
   try {
+    await schema.validate(req.body);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,
@@ -61,8 +67,13 @@ export const addMember = async (req, res) => {
 
 export const updateMember = async (req, res) => {
   const { kanbanId, userId, role } = req.body;
-
+  const schema = yup.object().shape({
+    kanbanId: yup.number().required(),
+    userId: yup.number().required(),
+    role: yup.mixed().oneOf(["admin", "member"]).required(),
+  });
   try {
+    await schema.validate(req.body);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,
@@ -103,7 +114,12 @@ export const updateMember = async (req, res) => {
 
 export const removeMember = async (req, res) => {
   const { userId, kanbanId } = req.body;
+  const schema = yup.object().shape({
+    userId: yup.number().required(),
+    kanbanId: yup.number().required(),
+  });
   try {
+    await schema.validate(req.body);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,

@@ -4,7 +4,16 @@ import sequlizeErrors from "../errors/sequlizeErrors";
 export const createNote = async (req, res) => {
   const { title, description, columnId, colorId, kanbanId } = req.body;
   const creatorId = req.user.id;
+  const schema = yup.object().shape({
+    title: yup.string().required().min(3).max(32),
+    description: yup.string().required().min(1).max(255),
+    columnId: yup.number().required(),
+    colorId: yup.number().required(),
+    kanbanId: yup.number().required(),
+  });
+
   try {
+    await schema.validate(req.body);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId: kanbanId,
@@ -40,7 +49,16 @@ export const updateNote = async (req, res) => {
   const { title, description, columnId, kanbanId } = req.body;
   const { id } = req.params;
 
+  const schema = yup.object().shape({
+    title: yup.string().required().min(3).max(32),
+    description: yup.string().required().min(1).max(255),
+    columnId: yup.number().required(),
+    kanbanId: yup.number().required(),
+  });
+
   try {
+    await schema.validate(req.body);
+    await yup.number().required().validate(id);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId: kanbanId,
@@ -83,6 +101,8 @@ export const deleteNote = async (req, res) => {
   const { id } = req.params;
 
   try {
+    await yup.number().required().validate(id);
+    await yup.number().required().validate(kanbanId);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId: kanbanId,

@@ -10,7 +10,12 @@ export const createColumn = async (req, res) => {
   const { name, kanbanId } = req.body;
   const creatorId = req.user.id;
 
+  const schema = yup.object().shape({
+    name: yup.string().required().min(3).max(32),
+    kanbanId: yup.number().required(),
+  });
   try {
+    await schema.validate(req.body);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,
@@ -42,8 +47,14 @@ export const createColumn = async (req, res) => {
 export const updateColumn = async (req, res) => {
   const { name, kanbanId } = req.body;
   const { id } = req.params;
+  const schema = yup.object().shape({
+    name: yup.string().required().min(3).max(32),
+    kanbanId: yup.number().required(),
+  });
 
   try {
+    await schema.validate(req.body);
+    await yup.number().required().validate(id);
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,
@@ -89,6 +100,9 @@ export const deleteColumn = async (req, res) => {
   const creatorId = req.user.id;
 
   try {
+    await yup.number().required().validate(id);
+    await yup.number().required().validate(kanbanId);
+
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,

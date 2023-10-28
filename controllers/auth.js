@@ -1,22 +1,28 @@
 import bcrypt from "bcrypt";
-import sequlizeErrors from "../errors/sequlizeErrors";
 import jwt from "jsonwebtoken";
 import { User } from "../models";
 import dotenv from "dotenv";
+import * as yup from "yup";
+import errorsHandler from "../errors/errorsHandler";
 
 dotenv.config();
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().required().min(8).max(32),
+  });
+
   try {
+    await schema.validate(req.body);
+
     const user = await User.findOne({
       where: {
         email,
       },
     });
-
-    console.log(user);
 
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -37,13 +43,20 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().required().min(8).max(32),
+    username: yup.string().required().min(3).max(32),
+  });
+  
   try {
+    await schema.validate(req.body);
     const user = await User.create({
       email,
       password,
@@ -59,6 +72,6 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
