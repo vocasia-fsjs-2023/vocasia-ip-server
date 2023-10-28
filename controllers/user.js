@@ -1,6 +1,7 @@
 import { User } from "../models";
 import bcrypt from "bcrypt";
 import * as yup from "yup";
+import errorsHandler from "../errors/errorsHandler";
 
 export const getUser = async (req, res) => {
   const { id } = req.params;
@@ -45,7 +46,7 @@ export const updateUser = async (req, res) => {
 
     return res.status(200).json({ message: "User updated" });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -77,6 +78,6 @@ export const updatePassword = async (req, res) => {
 
     return res.status(200).json({ message: "Password updated" });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };

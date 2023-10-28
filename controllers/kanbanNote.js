@@ -1,6 +1,6 @@
-import e from "express";
 import { KanbanNote as Note, Member } from "../models";
-import sequlizeErrors from "../errors/sequlizeErrors";
+import errorsHandler from "../errors/errorsHandler";
+import * as yup from "yup";
 export const createNote = async (req, res) => {
   const { title, description, columnId, colorId, kanbanId } = req.body;
   const creatorId = req.user.id;
@@ -41,7 +41,7 @@ export const createNote = async (req, res) => {
       data: note,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -92,7 +92,7 @@ export const updateNote = async (req, res) => {
       data: note,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -133,6 +133,6 @@ export const deleteNote = async (req, res) => {
       data: note,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };

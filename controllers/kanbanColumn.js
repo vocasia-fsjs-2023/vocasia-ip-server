@@ -4,7 +4,8 @@ import {
   Member,
   KanbanNote as Note,
 } from "../models";
-import sequlizeErrors from "../errors/sequlizeErrors";
+import errorsHandler from "../errors/errorsHandler";
+import * as yup from "yup";
 
 export const createColumn = async (req, res) => {
   const { name, kanbanId } = req.body;
@@ -40,7 +41,7 @@ export const createColumn = async (req, res) => {
       data: column,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -90,7 +91,7 @@ export const updateColumn = async (req, res) => {
       data: column,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -141,6 +142,6 @@ export const deleteColumn = async (req, res) => {
       data: column,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };

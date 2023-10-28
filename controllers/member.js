@@ -1,5 +1,6 @@
 import { Kanban, Member, User } from "../models";
-import sequlizeErrors from "../errors/sequlizeErrors";
+import errorsHandler from "../errors/errorsHandler";
+import * as yup from "yup";
 
 export const addMember = async (req, res) => {
   const { kanbanId, userId, role } = req.body;
@@ -61,7 +62,7 @@ export const addMember = async (req, res) => {
       data: member,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -108,7 +109,7 @@ export const updateMember = async (req, res) => {
       message: "Member updated successfully",
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -164,6 +165,6 @@ export const removeMember = async (req, res) => {
       message: "Member deleted successfully",
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };

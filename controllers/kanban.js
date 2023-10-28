@@ -1,4 +1,4 @@
-import sequlizeErrors from "../errors/sequlizeErrors";
+import errorsHandler from "../errors/errorsHandler";
 import { Kanban, Member, KanbanColumn, KanbanNote } from "../models";
 import * as yup from "yup";
 export const createKanban = async (req, res) => {
@@ -25,7 +25,7 @@ export const createKanban = async (req, res) => {
       data: kanban,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -62,7 +62,7 @@ export const updateKanban = async (req, res) => {
       data: kanban,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -109,7 +109,7 @@ export const deleteKanban = async (req, res) => {
       message: "Kanban deleted successfully",
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -163,7 +163,7 @@ export const getKanban = async (req, res) => {
       data: kanban,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };
 
@@ -182,6 +182,6 @@ export const getKanbans = async (req, res) => {
       data: kanbans,
     });
   } catch (error) {
-    sequlizeErrors(error, req, res);
+    return errorsHandler(error, req, res);
   }
 };

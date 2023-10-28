@@ -1,3 +1,5 @@
+import * as yup from "yup";
+import { Sequelize } from "sequelize";
 export default (error, req, res, next) => {
   if (error instanceof yup.ValidationError) {
     return res.status(400).json({
