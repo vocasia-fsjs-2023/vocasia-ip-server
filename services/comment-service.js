@@ -1,13 +1,41 @@
 const { ResponseError } = require("../error/response-error");
-const { Comment, Post } = require("../models");
+const { Comment, Post, User } = require("../models");
 const { createCommentValidation, getCommentValidation, updateCommentValidation } = require("../validation/comment-validation");
+const { getPostValidation } = require("../validation/post-validation");
 const { validate } = require("../validation/validation");
+
+const index = async (postId) => {
+    postId = validate(getPostValidation, postId);
+    const post = await Post.findByPk(postId, {
+        where: {
+            deletedAt: null,
+        },
+    });
+    if (!post) {
+        throw new ResponseError(404, "Post not found");
+    }
+
+    return Comment.findAll({
+        where: {
+            postId: postId,
+            deletedAt: null,
+        },
+        include: [
+            {
+                model: User,
+                as: "user",
+                attributes: ["name", "username"],
+            }
+        ]
+    });
+}
 
 const create = async (request) => {
     const commentRequest = validate(createCommentValidation, request);
     const post = await Post.findOne({
         where: {
             id: commentRequest.postId,
+            deletedAt: null,
         },
     });
 
@@ -24,8 +52,17 @@ const create = async (request) => {
 
 const update = async (user, postId, request) => {
     const commentRequest = validate(updateCommentValidation, request);
-    const comment = await Comment.findByPk(commentRequest.id);
-    const post = await Post.findByPk(postId);
+    const comment = await Comment.findByPk(commentRequest.id, {
+        where: {
+            deletedAt: null,
+        },
+    });
+
+    const post = await Post.findByPk(postId, {
+        where: {
+            deletedAt: null,
+        },
+    });
 
     if (!comment) {
         throw new ResponseError(404, "Comment not found");
@@ -41,8 +78,16 @@ const update = async (user, postId, request) => {
 
 const remove = async (user, postId, commentId) => {
     commentId = validate(getCommentValidation, commentId);
-    const comment = await Comment.findByPk(commentId);
-    const post = await Post.findByPk(postId);
+    const comment = await Comment.findByPk(commentId, {
+        where: {
+            deletedAt: null,
+        },
+    });
+    const post = await Post.findByPk(postId, {
+        where: {
+            deletedAt: null,
+        },
+    });
 
     if (!comment) {
         throw new ResponseError(404, "Comment not found");
@@ -51,8 +96,10 @@ const remove = async (user, postId, commentId) => {
     } else if (comment.userId != user.id) {
         throw new ResponseError(403, "Forbidden");
     } else {
-        return comment.destroy();
+        return comment.update({
+            deletedAt: new Date(),
+        });
     }
 }
 
-module.exports = commentService = { create, update, remove };
+module.exports = commentService = { create, update, remove, index };

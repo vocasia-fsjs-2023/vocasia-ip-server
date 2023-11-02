@@ -56,7 +56,6 @@ const login = async (request) => {
 
 const get = (username) => {
     username = validate(getUserValidation, username);
-
     const user = User.findOne({
         where: {
             username,

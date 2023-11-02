@@ -19,6 +19,7 @@ router.put("/posts/:postId", authMiddleware, ownerPost, postController.update);
 router.delete("/posts/:postId", authMiddleware, ownerPost, postController.remove);
 
 // comment routes
+router.get("/posts/:postId/comments", commentController.index);
 router.post("/posts/:postId/comments", authMiddleware, commentController.create);
 router.put("/posts/:postId/comments/:commentId", authMiddleware, commentController.update);
 router.delete("/posts/:postId/comments/:commentId", authMiddleware, commentController.remove);

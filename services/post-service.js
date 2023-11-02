@@ -1,5 +1,5 @@
 const { ResponseError } = require("../error/response-error");
-const { Post, Comment, User } = require("../models");
+const { Post, User } = require("../models");
 const {
     createPostValidation,
     getPostValidation,
@@ -11,6 +11,7 @@ const index = () => {
     return Post.findAll({
         where: {
             published: true,
+            deletedAt: null,
         },
         attributes: {
             exclude: ["userId"],
@@ -38,6 +39,7 @@ const get = (postId) => {
     return Post.findOne({
         where: {
             id: postId,
+            deletedAt: null,
         },
         attributes: ["id", "title", "content", "slug", "createdAt"],
         include: [
@@ -45,26 +47,18 @@ const get = (postId) => {
                 model: User,
                 as: "user",
                 attributes: ["name", "username", "email"],
-            },
-            {
-                model: Comment,
-                as: "comments",
-                attributes: ["id", "content", "createdAt"],
-                include: [
-                    {
-                        model: User,
-                        as: "user",
-                        attributes: ["name", "username"],
-                    },
-                ],
-            },
+            }
         ],
     });
 };
 
 const update = async (request) => {
     const postRequest = validate(updatePostValidation, request);
-    const post = await Post.findByPk(postRequest.id);
+    const post = await Post.findByPk(postRequest.id, {
+        where: {
+            deletedAt: null,
+        },
+    });
 
     if (!post) {
         throw new ResponseError(404, "Post not found");
@@ -82,7 +76,9 @@ const update = async (request) => {
 
 const remove = (postId) => {
     postId = validate(getPostValidation, postId);
-    return Post.destroy({
+    return Post.update({
+        deletedAt: new Date(),
+    }, {
         where: {
             id: postId,
         },

@@ -1,5 +1,17 @@
 const commentService = require("../services/comment-service");
 
+const index = async (req, res, next) => {
+    try {
+        const postId = req.params.postId;
+        const comments = await commentService.index(postId);
+        res.status(200).json({
+            data: comments,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const create = async (req, res, next) => {
     try {
         const user = req.user;
@@ -49,4 +61,4 @@ const remove = async (req, res, next) => {
     }
 };
 
-module.exports = commentController = { create, update, remove };
+module.exports = commentController = { create, update, remove, index };
