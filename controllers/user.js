@@ -7,7 +7,6 @@ export const getUser = async (req, res) => {
   const { id } = req.params;
   try {
     await yup.number().required().validate(id);
-    await yup.required().positive().integer().validate(id);
     const user = await User.findOne({ where: { id } });
 
     if (!user) {

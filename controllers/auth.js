@@ -25,7 +25,7 @@ export const login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ field: "email", message: "Unauthorized" });
     }
 
     bcrypt.compare(password, user.password, (err, result) => {
@@ -37,10 +37,21 @@ export const login = async (req, res) => {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
-        return res.status(200).json({ token });
+
+        return res.status(200).json({
+          token,
+          message: "Loggin Succesfuly",
+          user: {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+          },
+        });
       }
 
-      return res.status(401).json({ message: "Unauthorized" });
+      return res
+        .status(401)
+        .json({ field: "password", message: "Unauthorized" });
     });
   } catch (error) {
     return errorsHandler(error, req, res);
@@ -54,7 +65,7 @@ export const register = async (req, res) => {
     password: yup.string().required().min(8).max(32),
     username: yup.string().required().min(3).max(32),
   });
-  
+
   try {
     await schema.validate(req.body);
     const user = await User.create({
