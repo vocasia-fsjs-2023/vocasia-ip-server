@@ -2,6 +2,46 @@ import { Kanban, Member, User } from "../models";
 import errorsHandler from "../errors/errorsHandler";
 import * as yup from "yup";
 
+export const getMembers = async (req, res) => {
+  const { kanbanId } = req.params;
+  const schema = yup.object().shape({
+    kanbanId: yup.number().required(),
+  });
+  try {
+    await schema.validate(req.params);
+    const isUserAuthorized = await Member.findOne({
+      where: {
+        kanbanId,
+        userId: req.user.id,
+      },
+    });
+
+    if (!isUserAuthorized) {
+      return res.status(401).json({
+        message: "You are not authorized to perform this action",
+      });
+    }
+
+    const members = await Member.findAll({
+      where: {
+        kanbanId,
+      },
+      include: {
+        model: User,
+        as: "user",
+        attributes: ["id", "username", "email"],
+      },
+    });
+
+    return res.status(200).json({
+      message: "Members retrieved successfully",
+      data: members,
+    });
+  } catch (error) {
+    return errorsHandler(error, req, res);
+  }
+};
+
 export const addMember = async (req, res) => {
   const { kanbanId, userId, role } = req.body;
   const creatorId = req.user.id;
