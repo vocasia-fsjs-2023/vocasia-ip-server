@@ -57,12 +57,12 @@ KanbanNote.belongsTo(Kanban, {
 
 KanbanColumn.hasMany(KanbanNote, {
   foreignKey: "columnId",
-  as: "kanbanNote",
+  as: "notes",
 });
 
 KanbanNote.belongsTo(KanbanColumn, {
   foreignKey: "columnId",
-  as: "kanbanColumn",
+  as: "column",
 });
 
 User.hasMany(Member, {

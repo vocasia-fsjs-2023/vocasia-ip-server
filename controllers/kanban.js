@@ -142,7 +142,7 @@ export const getKanban = async (req, res) => {
           as: "kanbanColumn",
           include: {
             model: KanbanNote,
-            as: "kanbanNote",
+            as: "notes",
           },
         },
         {

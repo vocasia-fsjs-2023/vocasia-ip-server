@@ -1,11 +1,46 @@
-import {
-  KanbanColumn as Column,
-  Kanban,
-  Member,
-  KanbanNote as Note,
-} from "../models";
+import { KanbanColumn as Column, Kanban, Member, KanbanNote } from "../models";
 import errorsHandler from "../errors/errorsHandler";
 import * as yup from "yup";
+
+export const getColumns = async (req, res) => {
+  const { kanbanId } = req.params;
+  const creatorId = req.user.id;
+
+  try {
+    await yup.number().required().validate(kanbanId);
+    const isUserAuthorized = await Member.findOne({
+      where: {
+        kanbanId,
+        userId: creatorId,
+      },
+    });
+
+    if (!isUserAuthorized) {
+      return res.status(401).json({
+        message: "You are not authorized to perform this action",
+      });
+    }
+
+    const columns = await Column.findAll({
+      where: {
+        kanbanId,
+      },
+      include: [
+        {
+          model: KanbanNote,
+          as: "notes",
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      message: "Columns retrieved successfully",
+      data: columns,
+    });
+  } catch (error) {
+    return errorsHandler(error, req, res);
+  }
+};
 
 export const createColumn = async (req, res) => {
   const { name, kanbanId } = req.body;
