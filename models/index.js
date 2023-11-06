@@ -65,6 +65,16 @@ KanbanNote.belongsTo(KanbanColumn, {
   as: "column",
 });
 
+User.hasMany(KanbanNote, {
+  foreignKey: "creatorId",
+  as: "user",
+});
+
+KanbanNote.belongsTo(User, {
+  foreignKey: "creatorId",
+  as: "creator",
+});
+
 User.hasMany(Member, {
   foreignKey: "userId",
   as: "member",

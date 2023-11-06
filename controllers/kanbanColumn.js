@@ -1,4 +1,10 @@
-import { KanbanColumn as Column, Kanban, Member, KanbanNote } from "../models";
+import {
+  KanbanColumn as Column,
+  Kanban,
+  Member,
+  KanbanNote,
+  User,
+} from "../models";
 import errorsHandler from "../errors/errorsHandler";
 import * as yup from "yup";
 
@@ -29,6 +35,11 @@ export const getColumns = async (req, res) => {
         {
           model: KanbanNote,
           as: "notes",
+          include: {
+            model: User,
+            as: "creator",
+            attributes: ["id", "username"],
+          },
         },
       ],
     });
@@ -91,6 +102,7 @@ export const updateColumn = async (req, res) => {
   try {
     await schema.validate(req.body);
     await yup.number().required().validate(id);
+
     const isUserAuthorized = await Member.findOne({
       where: {
         kanbanId,
@@ -153,7 +165,7 @@ export const deleteColumn = async (req, res) => {
       });
     }
 
-    await Note.destroy({
+    await KanbanNote.destroy({
       where: {
         columnId: id,
       },

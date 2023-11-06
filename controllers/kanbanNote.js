@@ -6,7 +6,6 @@ export const createNote = async (req, res) => {
   const creatorId = req.user.id;
   const schema = yup.object().shape({
     title: yup.string().required().min(3).max(32),
-    description: yup.string().required().min(1).max(255),
     columnId: yup.number().required(),
     colorId: yup.number().required(),
     kanbanId: yup.number().required(),
@@ -51,7 +50,7 @@ export const updateNote = async (req, res) => {
 
   const schema = yup.object().shape({
     title: yup.string().required().min(3).max(32),
-    description: yup.string().required().min(1).max(255),
+    description: yup.string(),
     columnId: yup.number().required(),
     kanbanId: yup.number().required(),
   });
@@ -72,20 +71,23 @@ export const updateNote = async (req, res) => {
       });
     }
 
-    const note = await Note.update(
-      { title, description, columnId },
-      {
-        where: {
-          id,
-        },
-      }
-    );
+    const note = await Note.findOne({
+      where: {
+        id,
+        columnId,
+      },
+    });
 
-    if (note[0] === 0) {
+    if (!note) {
       return res.status(404).json({
         message: "Note not found",
       });
     }
+
+    note.title = title;
+    note.description = description;
+    note.columnId = columnId;
+    await note.save();
 
     return res.status(200).json({
       message: "Note updated successfully",

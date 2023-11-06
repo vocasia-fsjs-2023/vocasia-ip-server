@@ -43,7 +43,6 @@ export const updateKanban = async (req, res) => {
       {
         where: {
           id,
-          creatorId,
         },
       }
     );

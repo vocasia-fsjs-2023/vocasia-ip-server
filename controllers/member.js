@@ -42,6 +42,70 @@ export const getMembers = async (req, res) => {
   }
 };
 
+export const addByEmail = async (req, res) => {
+  const { kanbanId, email, role } = req.body;
+  const creatorId = req.user.id;
+  const schema = yup.object().shape({
+    kanbanId: yup.number().required(),
+    email: yup.string().email().required(),
+    role: yup.mixed().oneOf(["admin", "member"]).required(),
+  });
+  try {
+    await schema.validate(req.body);
+    const isUserAuthorized = await Member.findOne({
+      where: {
+        kanbanId,
+        userId: creatorId,
+        role: "admin",
+      },
+    });
+
+    if (!isUserAuthorized) {
+      return res.status(401).json({
+        message: "You are not authorized to perform this action",
+      });
+    }
+
+    const isUserExist = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!isUserExist) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const isExistingMember = await Member.findOne({
+      where: {
+        kanbanId,
+        userId: isUserExist.id,
+      },
+    });
+
+    if (isExistingMember) {
+      return res.status(409).json({
+        message: "Member already exists",
+      });
+    }
+
+    const member = await Member.create({
+      kanbanId,
+      userId: isUserExist.id,
+      role,
+    });
+
+    return res.status(201).json({
+      message: "Member added successfully",
+      data: member,
+    });
+  } catch (error) {
+    return errorsHandler(error, req, res);
+  }
+};
+
 export const addMember = async (req, res) => {
   const { kanbanId, userId, role } = req.body;
   const creatorId = req.user.id;
