@@ -1,0 +1,688 @@
+{
+	"info": {
+		"_postman_id": "1fe36c70-bc2d-4084-8934-823eb927949d",
+		"name": "IP_SERVER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30143431"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Yunanda Windi\",\r\n    \"noTlp\": \"089478869345\",\r\n    \"email\":\"yunandaaaa@email.com\",\r\n    \"alamat\": \"Kota Tangerang\",\r\n    \"password\": \"yunandaaaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"yunandaaaa@email.com\",\r\n    \"password\": \"yunandaaaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pesanan",
+			"item": [
+				{
+					"name": "POST Create Pesanan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"makananId\": 3,\r\n   \"jumlah_makanan\": 8,\r\n   \"minumanId\": 3,\r\n   \"jumlah_minuman\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pesanan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pesanan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Pesanan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pesanan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pesanan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY ID Pesanan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pesanan/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pesanan",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Pesanan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"makananId\": 3,\r\n    \"jumlah_makanan\": 10,\r\n    \"minumanId\": 3,\r\n    \"jumlah_minuman\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pesanan/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pesanan",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pesanan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pesanan/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pesanan",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Makanan",
+			"item": [
+				{
+					"name": "POST Create Makanan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama_makanan\": \"Smoked Maguro Roll\", \r\n    \"harga\": \"38000\",\r\n    \"deskripsi\": \"Smoked tuna, cream cheese, dan kyuri dengan taburan wijen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/makanan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"makanan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Makanan",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/makanan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"makanan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY ID Makanan",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/makanan/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"makanan",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Update Makanan Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama_makanan\": \"Yaki Unagi Roll\",\r\n    \"harga\": 32000,\r\n    \"deskripsi\": \"Gulungan sushi unagi yang manis dan gurih\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/makanan/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"makanan",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Update Makanan Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"harga\": 38000,\r\n    \"deskripsi\": \"Sushi belut Jepang yang disukai banyak orang\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/makanan/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"makanan",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEL Makanan Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/makanan/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"makanan",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Minuman",
+			"item": [
+				{
+					"name": "POST Create Minuman",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama_minuman\": \"Sakura Tea\", \r\n    \"harga\": \"49000\",\r\n    \"deskripsi\": \"Minuman ini terbuat dari bunga musim semi di Jepang, Sakura.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/minuman",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"minuman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Minuman",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/minuman",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"minuman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY ID Minuman",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/minuman/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"minuman",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Update Minuman Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama_minuman\": \"Royal Milk Tea\",\r\n    \"harga\": 49000,\r\n    \"deskripsi\": \"Milk tea ini terbuat dari seduhan daun teh Darjeeling atau daun teh Assam\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/minuman/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"minuman",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Update Minuman Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"harga\": 45000,\r\n    \"deskripsi\": \"Teh ini cocok dikonsumsi berbagi usia\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/minuman/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"minuman",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEL Makanan Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ5dW5hbmRhYWFhQGVtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5OTM4MTUxMn0.UyaQYx8AagZLmJuW75Z3jnkDtBewSBqPXgqo1QJfu2Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/minuman/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"minuman",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
