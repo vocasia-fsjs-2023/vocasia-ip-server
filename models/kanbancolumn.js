@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         allowNull: false,
       },
+      notesOrder: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        allowNull: false,
+        defaultValue: [],
+      },
     },
     {
       sequelize,

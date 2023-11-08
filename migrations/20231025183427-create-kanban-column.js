@@ -23,6 +23,10 @@ module.exports = {
         },
         allowNull: false,
       },
+      notesOrder: {
+        type: Sequelize.ARRAY,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

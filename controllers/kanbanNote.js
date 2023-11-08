@@ -1,4 +1,4 @@
-import { KanbanNote as Note, Member } from "../models";
+import { KanbanNote as Note, Member, KanbanNote } from "../models";
 import errorsHandler from "../errors/errorsHandler";
 import * as yup from "yup";
 export const createNote = async (req, res) => {
@@ -136,5 +136,53 @@ export const deleteNote = async (req, res) => {
     });
   } catch (error) {
     return errorsHandler(error, req, res);
+  }
+};
+
+export const moveKanbanNoteColumn = async (req, res) => {
+  const { kanbanId, noteId, newColumnId } = req.body;
+  const userId = req.user.id;
+  const schema = yup.object({
+    kanbanId: yup.number().required(),
+    noteId: yup.number().required(),
+    newColumnId: yup.number().required(),
+  });
+  try {
+    await schema.validate(req.body);
+
+    const isUserAuthorized = await Member.findOne({
+      where: {
+        kanbanId: kanbanId,
+        userId: userId,
+        role: "admin",
+      },
+    });
+
+    if (!isUserAuthorized) {
+      return res.status(401).json({
+        message: "You are not authorized to perform this action",
+      });
+    }
+
+    const note = await KanbanNote.findByPk(noteId, {
+      where: { kanbanId: kanbanId },
+    });
+
+    if (!note) {
+      return res.status(404).json({
+        message: "Note not found",
+      });
+    }
+
+    note.columnId = newColumnId;
+
+    await note.save();
+
+    return res.status(200).json({
+      message: "Note has been successfully moved to new columnId",
+      data: note,
+    });
+  } catch (error) {
+    errorsHandler(error, req, res);
   }
 };

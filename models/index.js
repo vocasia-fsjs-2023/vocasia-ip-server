@@ -105,4 +105,6 @@ KanbanNote.belongsTo(Color, {
   as: "color",
 });
 
+sequelize.sync({ alter: true });
+
 export { Color, KanbanColumn, KanbanNote, User, Member, Kanban };
